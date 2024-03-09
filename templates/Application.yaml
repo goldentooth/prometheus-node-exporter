@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: prometheus-node-exporter
+  namespace: argocd
+  labels:
+    name: prometheus-node-exporter
+    managed-by: argocd
+spec:
+  project: "{{ .Values.spec.projectName }}"
+  source:
+    repoURL: "{{ .Values.spec.source.repoURL }}"
+    chart: "{{ .Values.spec.source.chart }}"
+    targetRevision: "{{ .Values.spec.source.targetRevision }}"
+    helm:
+      releaseName: "{{ .Values.spec.source.helm.releaseName }}"
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: "{{ .Values.spec.namespace }}"
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - Validate=true
+      - CreateNamespace=true
+      - PrunePropagationPolicy=foreground
+      - PruneLast=true
+      - RespectIgnoreDifferences=true
+      - ApplyOutOfSyncOnly=true

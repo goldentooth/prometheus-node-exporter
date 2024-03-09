@@ -1,0 +1,9 @@
+spec:
+  projectName: gitops-repo
+  namespace: prometheus-node-exporter
+  source:
+    repoURL: 'https://prometheus-community.github.io/helm-charts'
+    chart: 'prometheus-node-exporter'
+    targetRevision: '4.31.0'
+    helm:
+      releaseName: 'prometheus-node-exporter'
